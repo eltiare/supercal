@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Supercal Test</title>
+  <link rel="stylesheet" href="lib/supercal.css">
+  <style type="text/css">
+    body > div {
+      display: flex;
+      margin: 2em 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Static:</h1>
+  <div id="static-calendar">
+
+  </div>
+
+  <h1>Bare controller:</h1>
+  <div id="calendar-controller">
+
+  </div>
+
+  <script src="lib/manual-test.js"></script>
+  <script>
+    var TimeDial = window.getClass('TimeDial');
+    renderComponent( document.querySelector('#static-calendar'),
+      'Calendar', { displayMonth: new TimeDial() });
+
+    renderComponent( document.querySelector('#calendar-controller'),
+      'SingleDatePicker', { numberOfMonths: 2 } );
+
+  </script>
+</body>
+</html>

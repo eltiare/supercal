@@ -1,0 +1,105 @@
+/* Open-sourced licensed MIT 2017 by Jeremy Nicoll
+ * look for updated code at http://github.com/eltiare */
+
+.Supercal {
+
+  position: relative;
+  display: flex;
+  transition: all 0.2s linear;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  .Supercal-month-container, .Supercal-prev-months, .Supercal-current-months, .Supercal-placeholder-months {
+    display: flex;
+  }
+
+  .Supercal-month-container {
+    transition: height 0.3s ease-in;
+  }
+
+  .Supercal-prev-months, .Supercal-current-months {
+    transition: left 0.3s ease-in;
+    position: absolute;
+    width: 100%;
+  }
+
+  .Supercal-month-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .Supercal-placeholder-months {
+    position: static;
+    visibility: hidden;
+  }
+
+  .Supercal-prev-months {
+    top: 0;
+    left: 0;
+  }
+
+  .Supercal-month {
+    margin: 0 10px;
+  }
+
+  .Supercal-month-title {
+    text-align: center;
+    font-size: 105%;
+    font-weight: bold;
+  }
+
+  .Supercal-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 20px);
+    margin: 10px;
+    z-index: 10;
+    .Supercal-prev { float: left; }
+    .Supercal-next { float: right; }
+  }
+
+  .Supercal-month {
+    padding: 1px;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: normal;
+    font-size: 12px;
+    color: #666;
+    padding: 15px 0;
+  }
+
+  td {
+    box-sizing: border-box;
+    width: 35px;
+    height: 35px;
+  }
+
+  td.Supercal-in-month {
+    cursor: pointer;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    color: #000;
+  }
+
+  td.Supercal-day-hover {
+    background: #c3f7ff;
+    border: 1px solid #037385;
+  }
+
+  td.Supercal-day-selected {
+    background: #84d3e0;
+  }
+
+}
