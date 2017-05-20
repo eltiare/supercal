@@ -6,6 +6,8 @@ and `time-dial` - which is currently included in this codebase but will be
 extracted out to another module in the near future. If you're interested in
 further reducing your download footprint, look into `preact` and `preact-compat`.
 
+This code is copyrighted by Jeremy Nicoll and licensed MIT. 
+
 Installation
 ------------
 
