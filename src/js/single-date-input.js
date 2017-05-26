@@ -11,7 +11,8 @@ export default class SingleDateInput extends Component {
 
   constructor(props) {
     super(... arguments);
-    this._bindFunctions('_inputChange', '_pickerChange', '_inputFocus', '_inputBlur');
+    this._bindFunctions('_inputChange', '_pickerChange', '_inputFocus',
+      '_inputBlur', '_pickerFocus');
     this.state = this._stateFromProps(props);
   }
 
@@ -24,15 +25,16 @@ export default class SingleDateInput extends Component {
     let { show, value, selectedDay } = this.state;
     let input = <input type="text" name={ inputName || 'date' }
       value={ value } onChange={ this.inputChange }
-      onFocus={ this.inputFocus } onBlur={ this.inputBlur }
+      onFocus={ this._inputFocus } onBlur={ this._inputBlur }
       className={ inputClass || 'Supercal-input' } ref="input" key="input" />;
-    return [
-      input,
+    return <div class="Supercal-single-picker-input">
+      { input }
       <HolderComponent show={ propsShow === undefined ? show : propsShow }
           anchorElement={ input } key="holder">
-        <SingleDatePicker onDaySelect={ this.pickerChange } />
+        <SingleDatePicker onDaySelect={ this._pickerChange }
+            onFocus={ this._pickerFocus } onBlur={ this._inputBlur } />
       </HolderComponent>
-    ];
+    </div>;
   }
 
   _inputChange(e) {
@@ -51,11 +53,19 @@ export default class SingleDateInput extends Component {
   }
 
   _inputFocus() {
-    if (this.props.show === undefined) this.setState({ show: true });
+    clearTimeout(this.hiderTimeout);
+    if (this.props.show !== undefined) return;
+    this.setState({ show: true });
   }
 
   _inputBlur() {
-    if (this.props.show === undefined) this.setState({ show: false });
+    clearTimeout(this.hiderTimeout);
+    if (this.props.show !== undefined) return;
+    this.hiderTimeout = setTimeout( () => this.setState({ show: false }), 50 );
+  }
+
+  _pickerFocus() {
+    clearTimeout(this.hiderTimeout);
   }
 
 }

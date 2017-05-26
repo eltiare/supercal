@@ -4,35 +4,47 @@
   <meta charset="utf-8">
   <title>Supercal Test</title>
   <link rel="stylesheet" href="lib/supercal.css">
+  <link rel="stylesheet" href="lib/holder.css">
   <style type="text/css">
-    body > div {
+
+    .comp {
       display: flex;
       margin: 2em 0;
+    }
+
+    input {
+      border: 1px solid #ccc;
+      font-size: 12px;
+      padding: 5px;
+      border-radius: 5px;
     }
   </style>
 </head>
 
 <body>
   <h1>Static:</h1>
-  <div id="static-calendar">
+  <div id="static-calendar" class="comp">
 
   </div>
 
   <h1>Bare controller:</h1>
-  <div id="calendar-controller">
+  <div id="calendar-controller" class="comp">
+
+  </div>
+
+  <h1>Single Input Picker</h1>
+  <div id="single-input" class="comp">
 
   </div>
 
   <script src="lib/manual-test.js"></script>
   <script>
-    var TimeDial = window.getClass('TimeDial');
+    TimeDial = window.getClass('TimeDial');
     renderComponent( document.querySelector('#static-calendar'),
       'Calendar', { displayMonth: new TimeDial() });
-
-    let comp = renderComponent( document.querySelector('#calendar-controller'),
+    renderComponent( document.querySelector('#calendar-controller'),
       'SingleDatePicker', { numberOfMonths: 2 } );
-
-    console.info(comp);
+    renderComponent( document.querySelector('#single-input'), 'SingleDateInput');
 
   </script>
 </body>

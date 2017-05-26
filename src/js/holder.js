@@ -8,7 +8,7 @@ export class HolderComponent extends Component {
 
   constructor(props) {
     super(props);
-    this._bindFuctions('open', 'close', '_reposition');
+    this._bindFunctions('open', 'close', '_reposition');
     this.state = this._stateFromProps(props);
   }
 
@@ -34,10 +34,10 @@ export class HolderComponent extends Component {
 
   render() {
     const { show } = this.state;
-    if (!show) return null;
     const { html, children, modal, popupClass } = this.props;
     const modalClasses = this.props.modalClasses || {};
-    const contentOpts = html ? { dangerouslySetInnerHTML : { __html: html } } : { children };
+    const contentOpts = html ?
+      { dangerouslySetInnerHTML : { __html: html } } : { children };
     if (modal) {
       return <div className={ modalClasses.container || 'Holder-modal-container' } ref="container">
         <div ref="overlay" className={ modalClasses.overlay || 'Holder-modal-overlay' }
@@ -75,13 +75,12 @@ export class HolderComponent extends Component {
     let { modal, anchorElement, popupPadding, universalPositioning } = this.props;
     let { show } = this.state;
     let { container } = this.refs;
-    let bottom, left;
     if (modal || !show) return;
-
+    let bottom, left;
     if (universalPositioning) {
-      { bottom, left } = anchorElement.getBoundingClientRect();
-      bottom += window.scrollY || window.pageYOffset;
-      left += window.scrollX || window.pageXOffset;
+      let bcr = anchorElement.getBoundingClientRect();
+      bottom = bcr.bottom + ( window.scrollY || window.pageYOffset );
+      left = bcr.left + ( window.scrollX || window.pageXOffset );
     } else {
       bottom = anchorElement.offsetTop + anchorElement.offsetHeight;
       left = anchorElement.offsetLeft;

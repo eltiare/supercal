@@ -26,7 +26,8 @@ let config = {
   devtool: prod ? false : 'source-map',
   entry: {
     "index.js":           "./src/js/supercal.js",
-    "supercal.css":       "./src/css/supercal.scss"
+    "supercal.css":       "./src/css/supercal.scss",
+    "holder.css":         "./src/css/holder.scss"
   },
   output: {
     path: path.resolve(__dirname, 'lib'),

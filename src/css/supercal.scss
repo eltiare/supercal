@@ -56,6 +56,20 @@
     width: calc(100% - 20px);
     margin: 10px;
     z-index: 10;
+    .Supercal-prev, .Supercal-next {
+      padding: 5px;
+      font-size: 90%;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #fff;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; 
+    }
     .Supercal-prev { float: left; }
     .Supercal-next { float: right; }
   }

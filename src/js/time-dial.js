@@ -110,7 +110,7 @@ export default class TimeDial {
   }
 
   format(format) {
-    return fetcha.format(this.dateTime, format);
+    return fecha.format(this.dateTime, format);
   }
 
   toDate() {

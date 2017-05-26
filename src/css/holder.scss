@@ -39,6 +39,18 @@
     z-index: 9001;
   }
 
+}
+
+.Holder-popup {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: 250ms ease-in opacity;
+  z-index: -1;
+}
+
+.Holder-popup, .Holder-modal-container {
+
   &.Holder-show  {
     visibility: visible;
     z-index: 0;
@@ -50,4 +62,5 @@
     z-index: 0;
     opacity: 0;
   }
+
 }

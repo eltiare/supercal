@@ -49,15 +49,17 @@ export default class CalendarController extends Component {
   next(e) {
     e && e.preventDefault();
     this._alterDisplay( m => m.add(this.props.numberOfMonths || 1, 'months') );
+    return false;
   }
 
   prev(e) {
     e && e.preventDefault();
     this._alterDisplay( m => m.subtract(this.props.numberOfMonths || 1, 'months') );
+    return false;
   }
 
   render() {
-    let { numberOfMonths } = this.props;
+    let { numberOfMonths, onFocus, onBlur } = this.props;
     let { displayMonth, prevMonth } = this.state;
     let months = [], prevMonths = [], monthsContainers;
 
@@ -70,10 +72,11 @@ export default class CalendarController extends Component {
       }
     }
 
-    return <div className="Supercal" ref="calendar" tabindex="0">
+    return <div className="Supercal" ref="calendar" tabindex="0"
+          onFocus={ onFocus } onBlur={ onBlur }>
       <div className="Supercal-nav">
-        <button className="Supercal-prev" tabindex="-1" onClick={ this.prev }>Prev</button>
-        <button className="Supercal-next" tabindex="-1" onClick={ this.next }>Next</button>
+        <div className="Supercal-prev" onClick={ this.prev }>Prev</div>
+        <div className="Supercal-next" onClick={ this.next }>Next</div>
       </div>
       <div className="Supercal-month-container" ref="container">
         { prevMonth ? [
