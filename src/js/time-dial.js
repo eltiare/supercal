@@ -22,7 +22,6 @@ export default class TimeDial {
   }
 
   add(number, measurement) {
-    // TODO: add sanity check for number
     let args = this._toArray(), [ offset, multiplier ] = this._getOffsetMultiplier(measurement);
     args[offset] += number * multiplier;
     let newDate = this._makeDate(args);
@@ -163,11 +162,12 @@ export default class TimeDial {
       case 'S': case 'second': case 'seconds':
         return [5, 1];
       case 'MS': case 'millsecond': case 'milliseconds':
-        return [6, 1]
+        return [6, 1];
       default:
         throw "Invalid measurement passed: " + measurement;
     }
   }
+
 }
 
 // Shim getter methods to underlying date object

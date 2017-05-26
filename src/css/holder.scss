@@ -1,0 +1,53 @@
+@mixin full-screen() {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.Holder-modal-container {
+
+  position: absolute;
+  display: flex;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 250ms ease-in opacity;
+
+  @include full-screen();
+
+  .Holder-modal-overlay {
+    @include full-screen();
+    position: fixed;
+    background: rgba(0,0,0,0.5);
+    z-index: 9000;
+  }
+
+  .Holder-modal-content {
+    position: fixed;
+    min-width: 1px;
+    max-width: 90%;
+    /*max-width: 900px;
+    text-align: center;
+    img {
+      box-sizing: border-box;
+      max-width: 99%;
+      max-height: 99%;
+    }*/
+    z-index: 9001;
+  }
+
+  &.Holder-show  {
+    visibility: visible;
+    z-index: 0;
+    opacity: 1;
+  }
+
+  &.Holder-hide-transition {
+    visibility: visible;
+    z-index: 0;
+    opacity: 0;
+  }
+}

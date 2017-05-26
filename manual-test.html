@@ -29,8 +29,10 @@
     renderComponent( document.querySelector('#static-calendar'),
       'Calendar', { displayMonth: new TimeDial() });
 
-    renderComponent( document.querySelector('#calendar-controller'),
+    let comp = renderComponent( document.querySelector('#calendar-controller'),
       'SingleDatePicker', { numberOfMonths: 2 } );
+
+    console.info(comp);
 
   </script>
 </body>

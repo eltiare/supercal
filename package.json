@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Reliable, small, flexible calendar component built on (p)react.",
   "main": "lib/index.js",
+  "directories": {
+    "lib": "./lib"
+  },
   "dependencies": {
     "fecha": "^2.3.1",
     "prop-types": "^15.5.10"

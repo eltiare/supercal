@@ -26,21 +26,18 @@ let config = {
   devtool: prod ? false : 'source-map',
   entry: {
     "index.js":           "./src/js/supercal.js",
-    "manual-test.js":     "./src/js/manual-test.js",
     "supercal.css":       "./src/css/supercal.scss"
   },
   output: {
     path: path.resolve(__dirname, 'lib'),
     filename: '[name]'
   },
-  // externals: [ nodeExternals() ],
+  // externals: prod ? [ nodeExternals() ] : [],
   plugins: plugins,
   resolve: {
     alias: {
       'react': 'preact-compat',
-      'react-dom': 'preact-compat',
-      'create-react-class': 'preact-compat/lib/create-react-class',
-      'react-addons-css-transition-group': 'rc-css-transition-group'
+      'react-dom': 'preact-compat'
     }
   },
   module: {
@@ -85,5 +82,8 @@ let config = {
   }
 };
 
+if (!prod) {
+  config.entry["manual-test.js"] = "./src/js/manual-test.js";
+}
 
 module.exports = config;
