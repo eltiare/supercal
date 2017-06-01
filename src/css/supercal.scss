@@ -10,7 +10,8 @@
   border: 1px solid #ccc;
   border-radius: 10px;
 
-  .Supercal-month-container, .Supercal-prev-months, .Supercal-current-months, .Supercal-placeholder-months {
+  .Supercal-month-container, .Supercal-prev-months, .Supercal-current-months,
+    .Supercal-placeholder-months, .Supercal-static-months {
     display: flex;
   }
 
@@ -68,7 +69,7 @@
       -khtml-user-select: none; /* Konqueror HTML */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
-      user-select: none; 
+      user-select: none;
     }
     .Supercal-prev { float: left; }
     .Supercal-next { float: right; }

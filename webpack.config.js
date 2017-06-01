@@ -8,6 +8,7 @@ let env = process.env.NODE_ENV || 'dev';
 let prod = env === 'production';
 
 let plugins = [
+  //new webpack.optimize.UglifyJsPlugin({ sourceMap: !prod }),
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
   new ExtractTextPlugin("[name]"),
@@ -30,10 +31,13 @@ let config = {
     "holder.css":         "./src/css/holder.scss"
   },
   output: {
+    library: 'Supercal',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
     path: path.resolve(__dirname, 'lib'),
     filename: '[name]'
   },
-  // externals: prod ? [ nodeExternals() ] : [],
+  externals: prod ? [ nodeExternals() ] : [],
   plugins: plugins,
   resolve: {
     alias: {

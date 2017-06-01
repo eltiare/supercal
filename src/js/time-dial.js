@@ -43,6 +43,17 @@ export default class TimeDial {
     return this.add(-number, measurement);
   }
 
+  set(obj, date) {
+    let dateArgs = this._toArray(date);
+    for (let k in obj) {
+      if ( !obj.hasOwnProperty(k) ) continue;
+      let [ offset, multiplier ] = this._getOffsetMultiplier(k);
+      if (multiplier == 7) throw 'Cannot "set" a week. That does not make sense.';
+      dateArgs[offset] = obj[k];
+    }
+    return new TimeDial(this._makeDate(dateArgs));
+  }
+
   startOf(measurement, date) {
     let arr = this._toArray(date),
       [ offset, multiplier ] = this._getOffsetMultiplier(measurement);

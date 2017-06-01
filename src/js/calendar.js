@@ -65,7 +65,7 @@ export default class Calendar extends Component {
     let weeks = this.computeWeeks( displayMonth );
 
     return <div className="Supercal-month">
-      <div className="Supercal-month-title">{ this.i18n.monthNames[ displayMonth.getMonth() ] }</div>
+      <div className="Supercal-month-title">{ this.i18n.monthNames[ displayMonth.getMonth() ] }, { displayMonth.getFullYear() }</div>
       <table>
         <thead><tr>
           { this.i18n.dayNamesShort.map( dn => <th>{dn}</th> ) }

@@ -21,7 +21,7 @@ export default class SingleDateInput extends Component {
   }
 
   render() {
-    let { inputName, inputClass, propsShow } = this.props;
+    let { inputName, inputClass, propsShow, modal, ... passProps } = this.props;
     let { show, value, selectedDay } = this.state;
     let input = <input type="text" name={ inputName || 'date' }
       value={ value } onChange={ this.inputChange }
@@ -30,9 +30,9 @@ export default class SingleDateInput extends Component {
     return <div class="Supercal-single-picker-input">
       { input }
       <HolderComponent show={ propsShow === undefined ? show : propsShow }
-          anchorElement={ input } key="holder">
+          anchorElement={ input } key="holder" modal={ modal }>
         <SingleDatePicker onDaySelect={ this._pickerChange }
-            onFocus={ this._pickerFocus } onBlur={ this._inputBlur } />
+          onFocus={ this._pickerFocus } onBlur={ this._inputBlur } { ... passProps } />
       </HolderComponent>
     </div>;
   }

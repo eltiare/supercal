@@ -12,7 +12,7 @@ export default class CalendarController extends Component {
   constructor(props) {
     super(...arguments);
     this._bindFunctions('next', 'prev', '_keyListener', '_onDayHover',
-      '_onDaySelect', '_onDayHoverOut');
+      '_onDaySelect', '_onDayHoverOut', '_resizeListener');
     this.state = this._stateFromProps(props);
   }
 
@@ -22,6 +22,11 @@ export default class CalendarController extends Component {
 
   componentDidMount() {
     this.refs.calendar.addEventListener('keydown', this._keyListener);
+    window.addEventListener('resize', this._resizeListener);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._resizeListener);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,12 +88,20 @@ export default class CalendarController extends Component {
           <div className="Supercal-prev-months" ref="prevMonths">{ prevMonths }</div>,
           <div className="Supercal-current-months" ref="currentMonths">{ months }</div>,
           <div className="Supercal-placeholder-months">{ prevMonths }</div>
-        ] : months }
+        ] : <div ref="staticMonths" className="Supercal-static-months">{ months }</div> }
       </div>
     </div>;
   }
 
-  // Private functions, do not use as they are not guaranteed to follow semver.
+  // Private functions, do not use as they are not guaranteed to be stable across versions
+
+  _resizeListener(e) {
+    let { onResize } = this.props;
+    let { currentMonths, container , staticMonths } = this.refs;
+    if ( Array.isArray(onResize) ) { onResize.forEach( (fun) => fun(e) ) }
+      else if ( onResize ) { onResize(e); }
+    container.style.height = ( currentMonths || staticMonths ).clientHeight + 'px';
+  }
 
   _stateFromProps(props, oldProps) {
     let ret = {};

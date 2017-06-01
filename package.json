@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Reliable, small, flexible calendar component built on (p)react.",
   "main": "lib/index.js",
+  license: 'MIT',
   "directories": {
     "lib": "./lib"
   },
