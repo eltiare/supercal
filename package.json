@@ -1,6 +1,6 @@
 {
   "name": "react-supercal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Reliable, small, flexible calendar component built on (p)react.",
   "main": "lib/index.js",
   "license": "MIT",
@@ -10,8 +10,8 @@
   "dependencies": {
     "fecha": "^2.3.1",
     "prop-types": "^15.5.10",
-    "time-dial": "^0.0.1",
-    "react-arise": "^0.0.1"
+    "react-arise": "^0.0.1",
+    "time-dial": "^0.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

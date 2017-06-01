@@ -27,8 +27,7 @@ let config = {
   devtool: prod ? false : 'source-map',
   entry: {
     "index.js":           "./src/js/supercal.js",
-    "supercal.css":       "./src/css/supercal.scss",
-    "arise.css":         "react-arise/lib/arise.css"
+    "supercal.css":       "./src/css/supercal.scss"
   },
   output: {
     library: 'Supercal',
