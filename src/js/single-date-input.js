@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Component from './component';
-import { HolderComponent } from './holder';
+import Holder from 'react-holder';
 import SingleDatePicker from './single-date-picker';
-import TimeDial from './time-dial';
+import TimeDial from 'time-dial';
 
 export default class SingleDateInput extends Component {
 
@@ -29,11 +29,11 @@ export default class SingleDateInput extends Component {
       className={ inputClass || 'Supercal-input' } ref="input" key="input" />;
     return <div class="Supercal-single-picker-input">
       { input }
-      <HolderComponent show={ propsShow === undefined ? show : propsShow }
+      <Holder show={ propsShow === undefined ? show : propsShow }
           anchorElement={ input } key="holder" modal={ modal }>
         <SingleDatePicker onDaySelect={ this._pickerChange }
           onFocus={ this._pickerFocus } onBlur={ this._inputBlur } { ... passProps } />
-      </HolderComponent>
+      </Holder>
     </div>;
   }
 

@@ -1,11 +1,9 @@
 Supercal!
 =========
 
-Supercal is small but mighty calendar React component. It relies on `fecha`
-`time-dial` and `holder` - the latter two which are currently included in this
-codebase but will be extracted out to another module in the near future. If
-you're interested in further reducing your download footprint, look into
-`preact` and `preact-compat`.
+Supercal is small but mighty calendar React component. It relies on `fecha`,
+`time-dial`, and `react-arise`. If you're interested in further reducing your
+download footprint, look into`preact` and `preact-compat`.
 
 This code is copyrighted by Jeremy Nicoll and licensed MIT.
 

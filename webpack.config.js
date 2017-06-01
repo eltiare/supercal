@@ -28,7 +28,7 @@ let config = {
   entry: {
     "index.js":           "./src/js/supercal.js",
     "supercal.css":       "./src/css/supercal.scss",
-    "holder.css":         "./src/css/holder.scss"
+    "arise.css":         "react-arise/lib/arise.css"
   },
   output: {
     library: 'Supercal',

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Component from './component';
 
 import fecha from 'fecha';
-import TimeDial from './time-dial';
+import TimeDial from 'time-dial';
 
 export default class Calendar extends Component {
 

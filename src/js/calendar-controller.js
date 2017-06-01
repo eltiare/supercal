@@ -2,7 +2,7 @@
  * look for updated code at http://github.com/eltiare */
 
 import React from 'react';
-import TimeDial from './time-dial';
+import TimeDial from 'time-dial';
 import Calendar from './calendar';
 import PropTypes from 'prop-types';
 import Component from './component';

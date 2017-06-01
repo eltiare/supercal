@@ -1,15 +1,17 @@
 {
   "name": "react-supercal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Reliable, small, flexible calendar component built on (p)react.",
   "main": "lib/index.js",
-  license: 'MIT',
+  "license": "MIT",
   "directories": {
     "lib": "./lib"
   },
   "dependencies": {
     "fecha": "^2.3.1",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "time-dial": "^0.0.1",
+    "react-arise": "^0.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -55,7 +57,6 @@
     "picker"
   ],
   "author": "Jeremy Nicoll (http://github.com/eltiare)",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/eltiare/supercal/issues"
   },

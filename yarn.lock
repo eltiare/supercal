@@ -3837,6 +3837,10 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-arise@^0.0.1:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-arise/-/react-arise-0.0.2.tgz#ad0dcc875283aa5be84d04dcb116a004a63803d9"
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -4488,6 +4492,12 @@ tar@^2.0.0, tar@^2.2.1:
 throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"
+
+time-dial@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/time-dial/-/time-dial-0.0.1.tgz#ca0aafec054901a5fbbb7a450535f2cf5f817b5a"
+  dependencies:
+    fecha "^2.3.1"
 
 timers-browserify@^2.0.2:
   version "2.0.2"
