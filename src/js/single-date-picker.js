@@ -1,6 +1,7 @@
 import React from 'react';
 import Component from './component';
 import CalendarController from './calendar-controller';
+import Calendar from './calendar';
 
 export default class SingleDatePicker extends Component {
 
@@ -8,7 +9,7 @@ export default class SingleDatePicker extends Component {
 
   constructor(props) {
     super(props);
-    this._bindFunctions('_onDaySelect', '_onDayHover', '_onDayHoverOut', '_dayClasses');
+    this._bindFunctions('_onDaySelect', '_onDayHover', '_onDayHoverOut', '_renderDay');
     this.state = this._stateFromProps(props);
   }
 
@@ -19,11 +20,11 @@ export default class SingleDatePicker extends Component {
   render() {
     let { onDaySelect, onDayHover, onDayHoverOut, dayClasses, ... other } = this.props;
     return <CalendarController
+      { ... other }
       onDaySelect={ this._onDaySelect }
       onDayHover={ this._onDayHover }
       onDayHoverOut={ this._onDayHoverOut }
-      dayClasses={ this._dayClasses }
-      { ... other }
+      renderDay={ this._renderDay }
     />;
   }
 
@@ -45,12 +46,14 @@ export default class SingleDatePicker extends Component {
     this.setState({ hoverDay: null }, listener);
   }
 
-  _dayClasses(day) {
+  _renderDay(day) {
+    let { renderDay } = this.props;
     let { selectedDay, hoverDay } = this.state;
-    let ret = this.props.dayClasses ? [this.props.dayClasses(day)] : [];
-    if ( day.eq(selectedDay) ) ret.push('Supercal-day-selected');
-    if ( day.eq(hoverDay) ) ret.push('Supercal-day-hover');
-    return ret;
+    let obj = Calendar.normalizeDayResponse(renderDay && renderDay(day) );
+    obj.classes = obj.classes || [];
+    if ( day.eq(selectedDay) ) obj.classes.push('Supercal-day-selected');
+    if ( day.eq(hoverDay) ) obj.classes.push('Supercal-day-hover');
+    return obj;
   }
 
 }

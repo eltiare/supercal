@@ -7,7 +7,7 @@ import TimeDial from 'time-dial';
 
 export default class SingleDateInput extends Component {
 
-  get passPropsToState() { return ['value']; }
+  get passPropsToState() { return ['selectedDay', 'value']; }
 
   constructor(props) {
     super(... arguments);
@@ -21,18 +21,19 @@ export default class SingleDateInput extends Component {
   }
 
   render() {
-    let { inputName, inputClass, propsShow, modal, ... passProps } = this.props;
-    let { show, value, selectedDay } = this.state;
+    let { inputName, inputClass, modal,  ... passProps } = this.props;
+    let { show, selectedDay, value } = this.state;
+    value = value || ( selectedDay && selectedDay.format(this.props.format || 'YYYY-MM-DD') );
     let input = <input type="text" name={ inputName || 'date' }
       value={ value } onChange={ this.inputChange }
       onFocus={ this._inputFocus } onBlur={ this._inputBlur }
       className={ inputClass || 'Supercal-input' } ref="input" key="input" />;
     return <div class="Supercal-single-picker-input">
       { input }
-      <Arise show={ propsShow === undefined ? show : propsShow }
+      <Arise show={ this.props.show === undefined ? show : this.props.show }
           anchorElement={ input } key="holder" modal={ modal }>
-        <SingleDatePicker onDaySelect={ this._pickerChange }
-          onFocus={ this._pickerFocus } onBlur={ this._inputBlur } { ... passProps } />
+        <SingleDatePicker { ... passProps } onDaySelect={ this._pickerChange }
+          onFocus={ this._pickerFocus } onBlur={ this._inputBlur }  />
       </Arise>
     </div>;
   }
@@ -44,12 +45,11 @@ export default class SingleDateInput extends Component {
   }
 
   _pickerChange(day, e) {
-    let ret = {
+    this.setState({
       value: day.format(this.props.format || 'YYYY-MM-DD '),
-      selectedDay: day
-    };
-    if (this.props.show === undefined ) ret.show = false;
-    this.setState(ret);
+      selectedDay: day,
+      show: false
+    });
   }
 
   _inputFocus() {

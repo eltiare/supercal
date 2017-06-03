@@ -18,7 +18,7 @@ export default class Component extends React.Component {
     for (let i=0; p = vars[i]; i++) {
       if (newProps[p] !== oldProps[p]) newState[p] = newProps[p];
     }
-    this.setState(newState);
+    return newState;
   }
 
 }

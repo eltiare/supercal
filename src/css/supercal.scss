@@ -5,6 +5,7 @@
 
   position: relative;
   display: flex;
+  justify-content: center;
   transition: all 0.2s linear;
   padding: 10px;
   border: 1px solid #ccc;
@@ -13,6 +14,7 @@
   .Supercal-month-container, .Supercal-prev-months, .Supercal-current-months,
     .Supercal-placeholder-months, .Supercal-static-months {
     display: flex;
+    justify-content: center;
   }
 
   .Supercal-month-container {
@@ -103,14 +105,29 @@
 
   td.Supercal-in-month {
     cursor: pointer;
-    border: 1px solid #aaa;
+    border: 1px double #aaa;
     font-size: 14px;
     color: #000;
+    position: relative;
+    z-index: 3;
+  }
+
+  td.Supercal-out-of-month {
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    border: 1px solid #f3f3f3;
+  }
+
+  td.Supercal-disabled {
+    cursor: default;
+    background: #eee;
+    color: #999;
   }
 
   td.Supercal-day-hover {
     background: #c3f7ff;
-    border: 1px solid #037385;
+    border: 1px double #037385;
   }
 
   td.Supercal-day-selected {

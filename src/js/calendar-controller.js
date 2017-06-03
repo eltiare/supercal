@@ -9,6 +9,13 @@ import Component from './component';
 
 export default class CalendarController extends Component {
 
+  static proptypes = {
+    displayMonth: PropTypes.oneOfType([
+      PropTypes.instanceOf(TimeDial),
+      PropTypes.instanceOf(Date)
+    ])
+  }
+
   constructor(props) {
     super(...arguments);
     this._bindFunctions('next', 'prev', '_keyListener', '_onDayHover',
@@ -38,11 +45,13 @@ export default class CalendarController extends Component {
       let currentTime = displayMonth.getTime();
       let { prevMonths, currentMonths, container } = this.refs;
       let sideMove = container.clientWidth + 5;
-      this._withoutTransitions(currentMonths, () => {
+      this._withoutTransitions([currentMonths, prevMonths], () => {
         currentMonths.style.top = 0;
         currentMonths.style.left = ( prevTime < currentTime ? sideMove : -sideMove ) + 'px';
       });
       currentMonths.addEventListener('transitionend', (e) => {
+        // wtf, React. Quit reusing this div for another ref
+        if (prevMonths) prevMonths.style.left = 0;
         this.setState({ prevMonth: null });
       });
       currentMonths.style.left = 0;
@@ -100,7 +109,8 @@ export default class CalendarController extends Component {
     let { currentMonths, container , staticMonths } = this.refs;
     if ( Array.isArray(onResize) ) { onResize.forEach( (fun) => fun(e) ) }
       else if ( onResize ) { onResize(e); }
-    container.style.height = ( currentMonths || staticMonths ).clientHeight + 'px';
+    container.style.height = ''; container.offsetHeight; // Reset, reflow
+    container.style.height = (currentMonths || staticMonths).offsetHeight + 'px';
   }
 
   _stateFromProps(props, oldProps) {
@@ -115,14 +125,14 @@ export default class CalendarController extends Component {
   }
 
   _constructMonth(timeDial) {
-    let { dayClasses, renderDay } = this.props;
+    let { renderDay, showOutOfMonthDays } = this.props;
     return <Calendar
               displayMonth={ timeDial }
               onDayHover={ this._onDayHover }
               onDayHoverOut={ this._onDayHoverOut }
               onDaySelect={ this._onDaySelect }
-              dayClasses={ dayClasses }
               renderDay={ renderDay }
+              showOutOfMonthDays= { showOutOfMonthDays }
               />;
   }
 
@@ -134,11 +144,17 @@ export default class CalendarController extends Component {
     });
   }
 
-  _withoutTransitions(ele, fun) {
-    let transition = ele.style.transition;
-    ele.style.transition = 'none !important'; ele.offsetHeight;
-    fun(ele);
-    ele.style.transition = transition; ele.offsetHeight;
+  _withoutTransitions(eles, fun) {
+    if (!Array.isArray(eles)) eles = [eles];
+    let transitions = [], ele, i;
+    for (i=0; ele = eles[i]; i++) {
+      transitions.push(ele.style.transition);
+      ele.style.transition = 'none !important'; ele.offsetHeight;
+    }
+    fun(eles);
+    for(i=0; ele = eles[i]; i++) {
+      ele.style.transition = transitions[i]; ele.offsetHeight;
+    }
   }
 
   _keyListener(e) {
@@ -149,53 +165,37 @@ export default class CalendarController extends Component {
       this._onDayHover(this.state.displayMonth, e);
       return;
     }
-    switch(e.keyCode) {
-      case 32: // Spacebar
-        this._onDaySelect(hoverDay, e);
-        return;
-      case 33: // Page up
-        hoverDay = hoverDay.subtract(numberOfMonths, 'months');
-        break;
-      case 34: // Page down
-        hoverDay = hoverDay.add(numberOfMonths, 'months');
-        break;
-      case 35: // End of line
-        hoverDay = hoverDay.add(1, 'month');
-        break;
-      case 36:
-        hoverDay = hoverDay.subtract(1, 'month');
-        break;
-      case 37: // Arrow left
-        hoverDay = hoverDay.subtract(1, 'day');
-        break;
-      case 39: // Arrow right
-        hoverDay = hoverDay.add(1, 'day');
-        break;
-      case 38: // Arrow up
-        hoverDay = hoverDay.subtract(1, 'week');
-        break;
-      case 40: // Arrow down
-        hoverDay = hoverDay.add(1, 'week');
-        break;
+    let listeners = {
+      32: () => { this._onDaySelect(hoverDay, e); return false }, // Spacebar
+      33: () => { hoverDay = hoverDay.subtract(numberOfMonths, 'months') }, // Page up
+      34: () => { hoverDay = hoverDay.add(numberOfMonths, 'months') }, // Page down
+      35: () => { hoverDay = hoverDay.add(1, 'month'); }, // End of line
+      36: () => { hoverDay.subtract(1, 'month') }, // Start of line
+      37: () => { hoverDay = hoverDay.subtract(1, 'day') }, // Left arrow
+      38: () => { hoverDay = hoverDay.subtract(1, 'week') }, // Up arrow
+      39: () => { hoverDay = hoverDay.add(1, 'day') }, // Right arrow
+      40: () => { hoverDay = hoverDay.add(1, 'week') } // Down arrow
     }
-    this._onDayHover(hoverDay, e);
+    if(listeners[e.keyCode]) {
+      e.preventDefault();
+      if (listeners[e.keyCode]() !== false) this._onDayHover(hoverDay, e);
+    }
   }
 
   _onDaySelect(day, e) {
+    if (!this.props.showOutOfMonthDays && this._dayInDisplay(day) !== 0) return;
     clearTimeout(this._hoverTimeout);
     this.setState({ currentDay: day, hoverDay: null }, () => {
       if (this.props.onDaySelect) this.props.onDaySelect(day, e);
+      this._ensureDayInDisplay(day);
     });
   }
 
   _onDayHover(day, e) {
     clearTimeout(this._hoverTimeout);
     this.setState({ hoverDay: day }, () => {
-      if (this.props.onDayHover) this.props.onDayHover(day, e);
-      switch( this._dayInDisplay(day) ) {
-        case -1: this.prev(); break;
-        case 1: this.next(); break;
-      }
+      this.props.onDayHover && this.props.onDayHover(day, e);
+      e.type != 'mouseover' && this._ensureDayInDisplay(day);
     })
   }
 
@@ -219,11 +219,11 @@ export default class CalendarController extends Component {
     return 0;
   }
 
-}
+  _ensureDayInDisplay(day) {
+    switch( this._dayInDisplay(day) ) {
+      case -1: this.prev(); break;
+      case 1: this.next(); break;
+    }
+  }
 
-Calendar.proptypes = {
-  displayMonth: PropTypes.oneOfType([
-    PropTypes.instanceOf(TimeDial),
-    PropTypes.instanceOf(Date)
-  ])
 }

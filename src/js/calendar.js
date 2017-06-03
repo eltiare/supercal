@@ -11,6 +11,12 @@ export default class Calendar extends Component {
     displayMonth: PropTypes.instanceOf(TimeDial).isRequired
   }
 
+  static normalizeDayResponse(response) {
+    // This will catch null, which is intended here
+    return typeof(response) === 'object' ? Object.assign({}, response) :
+      { content: response };
+  }
+
   constructor() {
     super(...arguments);
     this._bindFunctions('_getListener', '_renderDay');
@@ -21,42 +27,43 @@ export default class Calendar extends Component {
   }
 
   computeWeeks(date) {
-
+    let { renderDayStart, renderDayEnd } = this.props;
+    renderDayStart && renderDayStart();
     let currentDay = date.startOf('month');
     let weeks = [[]], i, startWeekDay = currentDay.getDay(), weekCount = 0;
-
+    let { showOutOfMonthDays } = this.props;
     for (i=0; i < 7; i++) {
       if (i < startWeekDay) {
-        // TODO: put in code for displaying previous days
-        weeks[weekCount][i] = { inMonth: false };
+        let day = currentDay.subtract(startWeekDay - i, 'days');
+        let props = showOutOfMonthDays ? this._renderDay(day) : {};
+        weeks[weekCount][i] = { ... props, inMonth: false, object: day };
       } else {
-        weeks[weekCount][i] = {
-          inMonth: true,
-          ... this._renderDay(currentDay)
-        };
+        weeks[weekCount][i] = { ... this._renderDay(currentDay), inMonth: true, object: currentDay };
         currentDay = currentDay.add(1, 'day');
       }
     }
     let endOfMonth = false;
-    while( currentDay.getDate() > 1 ) {
+    while( !endOfMonth ) {
       weekCount += 1;
       weeks[weekCount] = [];
       for(i=0; i < 7; i++) {
-        // TODO: put in code for displaying next days
-        if (currentDay.getDate() == 1) {
+        if (!endOfMonth && currentDay.getDate() == 1) {
           endOfMonth = true;
-          break;
+          if (i == 0) break;
         }
-        weeks[weekCount][i] = {
-          inMonth: true,
-          ... this._renderDay(currentDay)
-        };
+        if (showOutOfMonthDays || !endOfMonth) {
+          weeks[weekCount][i] = {
+            ... this._renderDay(currentDay),
+            inMonth: !endOfMonth,
+            object: currentDay
+          };
+        } else if (!showOutOfMonthDays && endOfMonth) {
+          weeks[weekCount][i] = { inMonth: false, object: currentDay }
+        }
         currentDay = currentDay.add(1, 'day');
       }
-      for(; i < 7; i++) {
-        weeks[weekCount][i] = { inMonth: false };
-      }
     }
+    renderDayEnd && renderDayEnd();
     return weeks;
   }
 
@@ -73,18 +80,20 @@ export default class Calendar extends Component {
         <tbody>
           { weeks.map( week  => <tr>
               { week.map(day => {
-                  let classes = classNames(
-                    day.classNames,
-                    'Supercal-' + (day.inMonth ? 'in-month' : 'out-of-month')
-                  );
-                  return <td
-                      className={ classes }
-                      onClick={ this._getListener('onDaySelect', day.object) }
-                      onMouseOver={ this._getListener('onDayHover', day.object) }
-                      onMouseOut={ this._getListener('onDayHoverOut', day.object) }
-                      >
-                    { day.content }
-                  </td>;
+                let c = [];
+                if (!day.inMonth && this.props.showOutOfMonthDays)
+                  c.push('Supercal-out-of-month');
+                else if (day.inMonth)
+                  c.push('Supercal-in-month');
+                if (day.disabled) c.push('Supercal-disabled');
+                let classes = classNames( day.classes, c );
+                return <td
+                    className={ classes }
+                    onClick={ this._getListener('onDaySelect', day) }
+                    onMouseOver={ this._getListener('onDayHover', day) }
+                    onMouseOut={ this._getListener('onDayHoverOut', day) }>
+                  { day.content }
+                </td>;
               } ) }
             </tr>
           ) }
@@ -94,15 +103,17 @@ export default class Calendar extends Component {
   }
 
   _renderDay(day) {
-    return {
-      content: this.props.renderDay ? this.props.renderDay(day) : day.getDate(),
-      classNames: this.props.dayClasses ? this.props.dayClasses(day) : [],
-      object: day
-    };
+    let { renderDay } = this.props, obj;
+    obj = Calendar.normalizeDayResponse( renderDay && renderDay(day) );
+    if (obj.content === false) obj.content = null;
+    else if (!obj.content) obj.content = day.getDate();
+    obj.classNames = obj.classNames || [];
+    return obj;
   }
 
   _getListener(name, day) {
-    return this.props[name] && day ? e => this.props[name](day, e) : null;
+    return this.props[name] && !day.disabled ?
+      e => this.props[name](day.object, e) : null;
   }
 
 }

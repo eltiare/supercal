@@ -87,7 +87,10 @@ let config = {
 };
 
 if (!prod) {
-  config.entry["manual-test.js"] = "./src/js/manual-test.js";
+  Object.assign(config.entry, {
+    "manual-test.js": "./src/js/manual-test.js",
+    "arise.css": "react-arise/lib/arise.css"
+  });
 }
 
 module.exports = config;
