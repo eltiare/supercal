@@ -3868,9 +3868,9 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-arise@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/react-arise/-/react-arise-0.0.5.tgz#259bd4b5b7c1a568f187c53948a2f5e115a7aa39"
+react-arise@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-arise/-/react-arise-0.0.6.tgz#59e35900eacc1ec9c8af2b2fe5b6f698360031be"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
